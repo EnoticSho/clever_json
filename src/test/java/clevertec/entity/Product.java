@@ -3,6 +3,8 @@ package clevertec.entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldNameConstants;
 
 import java.util.List;
 import java.util.Map;
@@ -10,6 +12,8 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
+@FieldNameConstants
 @Builder(setterPrefix = "with")
 public class Product {
 
@@ -29,7 +33,7 @@ public class Product {
     private List<String> categories = List.of("Cars", "Mercedes");
 
     @Builder.Default
-    private Map<String, Object> specifications = Map.of(
+    private Map<String, List<String>> specifications = Map.of(
             "Color", List.of("Red", "Blue", "Green"),
             "Weight", List.of("1kg", "1.5kg", "2kg")
     );
