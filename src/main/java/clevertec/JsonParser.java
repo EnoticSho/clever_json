@@ -1,15 +1,19 @@
 package clevertec;
 
+import clevertec.entity.Token;
+import clevertec.entity.TokenType;
+import clevertec.exceptions.JsonParserException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static clevertec.TokenType.COLON;
-import static clevertec.TokenType.COMMA;
-import static clevertec.TokenType.END_ARRAY;
-import static clevertec.TokenType.END_OBJECT;
-import static clevertec.TokenType.STRING;
+import static clevertec.entity.TokenType.COLON;
+import static clevertec.entity.TokenType.COMMA;
+import static clevertec.entity.TokenType.END_ARRAY;
+import static clevertec.entity.TokenType.END_OBJECT;
+import static clevertec.entity.TokenType.STRING;
 
 public class JsonParser {
     private final List<Token> tokenList;
@@ -78,7 +82,7 @@ public class JsonParser {
         while (token.getType() != END_ARRAY) {
             array.add(parseValue());
             token = peekNextToken();
-            if (token.getType() != END_ARRAY){
+            if (token.getType() != END_ARRAY) {
                 expectedToken(COMMA);
             }
         }
@@ -87,11 +91,15 @@ public class JsonParser {
     }
 
     private Object parseNumber(Token token) {
-        if (token.getValue().contains(".")) {
-            return Double.parseDouble(token.getValue());
+        try {
+            if (token.getValue().contains(".")) {
+                return Double.parseDouble(token.getValue());
+            }
+            else
+                return Long.parseLong(token.getValue());
+        } catch (NumberFormatException e) {
+            throw new JsonParserException("Invalid number " + (currentTokenIndex - 1));
         }
-        else
-            return Long.parseLong(token.getValue());
     }
 
     private Token getToken() {
@@ -105,7 +113,7 @@ public class JsonParser {
     private void expectedToken(TokenType expectedTokenType) {
         Token token = getToken();
         if (token.getType() != expectedTokenType) {
-            throw new RuntimeException("Fault TokenType");
+            throw new JsonParserException("Expected " + expectedTokenType + " but was: " + token.getType() + " Position" + (currentTokenIndex - 1));
         }
     }
 }

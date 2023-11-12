@@ -1,11 +1,15 @@
 package clevertec;
 
+import clevertec.entity.Token;
+import clevertec.entity.TokenType;
+import com.fasterxml.jackson.core.JsonParseException;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class JsonTokenizer {
 
-    public List<Token> tokenize(String json) {
+    public List<Token> tokenize(String json) throws JsonParseException {
         List<Token> tokens = new ArrayList<>();
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < json.length(); i++) {
@@ -26,7 +30,7 @@ public class JsonTokenizer {
                         i++;
                     }
                     if (i >= json.length()) {
-                        throw new IllegalStateException("Незакрытая строка в JSON");
+                        throw new JsonParseException("Unclosed string in JSON at position: " + (i - stringBuilder.length()));
                     }
                     tokens.add(new Token(TokenType.STRING, stringBuilder.toString()));
                 }
@@ -38,7 +42,7 @@ public class JsonTokenizer {
                     }
                     String value = stringBuilder.toString();
                     if (!value.equals("true") && !value.equals("false") && !value.equals("null")) {
-                        throw new IllegalStateException("Неверное значение: " + value);
+                        throw new JsonParseException("Invalid value encountered in JSON at position: " + (i - value.length()) + ": " + value);
                     }
                     i--;
                     tokens.add(new Token(value.equals("null") ? TokenType.NULL : TokenType.BOOLEAN, value));

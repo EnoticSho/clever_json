@@ -41,8 +41,6 @@ public class JsonSerializerTest {
         String jsonSerializer = serializer.serialize(customer);
         String jacksonJson = jacksonMapper.writeValueAsString(customer);
 
-        System.out.println(jsonSerializer);
-
         // Then
         assertEquals(jacksonJson, jsonSerializer);
     }
@@ -55,7 +53,6 @@ public class JsonSerializerTest {
         // When
         String jsonSerializer = serializer.serialize(order);
         String jacksonJson = jacksonMapper.writeValueAsString(order);
-        System.out.println(jsonSerializer);
 
         // Then
         assertEquals(jacksonJson, jsonSerializer);
@@ -70,7 +67,6 @@ public class JsonSerializerTest {
         // When
         String jsonSerializer = serializer.serialize(product);
         String jacksonJson = jacksonMapper.writeValueAsString(product);
-        System.out.println(jsonSerializer);
 
         // Then
         assertEquals(jacksonJson, jsonSerializer);
@@ -78,11 +74,14 @@ public class JsonSerializerTest {
 
     @Test
     public void testDeserializationProduct() throws Exception {
+        // Given
         String json = "{\"id\":\"567ab0a2-4642-4b56-9720-ec8c17ffbb94\",\"name\":\"Mercedes\",\"price\":300.25,\"reviews\":[\"Excellent\",\"Good\"],\"categories\":[\"Cars\",\"Mercedes\"],\"specifications\":{\"Weight\":[\"1kg\",\"1.5kg\",\"2kg\"],\"Color\":[\"Red\",\"Blue\",\"Green\"]},\"userReviews\":{\"25a4b739-d0cf-4211-94d7-5a86b0264870\":[\"bad\",\"very bad\"],\"567ab0a2-4642-4b56-9720-ec8c17ffbb94\":[\"good\",\"very good\"]}}";
 
+        // When
         Product actual = serializer.deserialize(json, Product.class);
         Product expected = jacksonMapper.readValue(json, Product.class);
 
+        // Then
         assertThat(actual)
                 .hasFieldOrPropertyWithValue(Product.Fields.id, expected.getId())
                 .hasFieldOrPropertyWithValue(Product.Fields.name, expected.getName())
@@ -94,11 +93,14 @@ public class JsonSerializerTest {
 
     @Test
     public void testOrderDeserialization() throws Exception {
+        // Given
         String json = "{\"id\":\"a0944f24-873d-4b35-8355-6121647e2f87\",\"products\":[{\"id\":\"567ab0a2-4642-4b56-9720-ec8c17ffbb94\",\"name\":\"Mercedes\",\"price\":300.25,\"reviews\":[\"Excellent\",\"Good\"],\"categories\":[\"Cars\",\"Mercedes\"],\"specifications\":{\"Weight\":[\"1kg\",\"1.5kg\",\"2kg\"],\"Color\":[\"Red\",\"Blue\",\"Green\"]},\"userReviews\":{\"25a4b739-d0cf-4211-94d7-5a86b0264870\":[\"bad\",\"very bad\"],\"567ab0a2-4642-4b56-9720-ec8c17ffbb94\":[\"good\",\"very good\"]}},{\"id\":\"a464c376-910c-4cad-8abe-2fb6efe94c79\",\"name\":\"Porsche\",\"price\":300.25,\"reviews\":[\"Excellent\",\"Good\"],\"categories\":[\"Cars\",\"Mercedes\"],\"specifications\":{\"Weight\":[\"1kg\",\"1.5kg\",\"2kg\"],\"Color\":[\"Red\",\"Blue\",\"Green\"]},\"userReviews\":{\"25a4b739-d0cf-4211-94d7-5a86b0264870\":[\"bad\",\"very bad\"],\"567ab0a2-4642-4b56-9720-ec8c17ffbb94\":[\"good\",\"very good\"]}}],\"createDate\":\"2023-11-09T15:38:45.744420+02:00\"}";
 
+        // When
         Order actual = serializer.deserialize(json, Order.class);
         Order expected = jacksonMapper.readValue(json, Order.class);
 
+        // Then
         assertThat(actual)
                 .hasFieldOrPropertyWithValue(Order.Fields.id, expected.getId())
                 .hasFieldOrPropertyWithValue(Order.Fields.products, expected.getProducts())
@@ -107,11 +109,14 @@ public class JsonSerializerTest {
 
     @Test
     public void testCustomerDeserialization() throws Exception {
+        // Given
         String json = "{\"id\":\"41548c34-6471-4ce6-9512-644943b68d10\",\"firstName\":\"Sergey\",\"lastName\":\"Turpakov\",\"dateBirth\":\"1999-02-08\",\"orders\":[{\"id\":\"a0944f24-873d-4b35-8355-6121647e2f87\",\"products\":[{\"id\":\"567ab0a2-4642-4b56-9720-ec8c17ffbb94\",\"name\":\"Mercedes\",\"price\":300.25,\"reviews\":[\"Excellent\",\"Good\"],\"categories\":[\"Cars\",\"Mercedes\"],\"specifications\":{\"Color\":[\"Red\",\"Blue\",\"Green\"],\"Weight\":[\"1kg\",\"1.5kg\",\"2kg\"]},\"userReviews\":{\"25a4b739-d0cf-4211-94d7-5a86b0264870\":[\"bad\",\"very bad\"],\"567ab0a2-4642-4b56-9720-ec8c17ffbb94\":[\"good\",\"very good\"]}},{\"id\":\"a464c376-910c-4cad-8abe-2fb6efe94c79\",\"name\":\"Porsche\",\"price\":300.25,\"reviews\":[\"Excellent\",\"Good\"],\"categories\":[\"Cars\",\"Mercedes\"],\"specifications\":{\"Color\":[\"Red\",\"Blue\",\"Green\"],\"Weight\":[\"1kg\",\"1.5kg\",\"2kg\"]},\"userReviews\":{\"25a4b739-d0cf-4211-94d7-5a86b0264870\":[\"bad\",\"very bad\"],\"567ab0a2-4642-4b56-9720-ec8c17ffbb94\":[\"good\",\"very good\"]}}],\"createDate\":\"2023-11-09T15:38:45.744420+02:00\"}],\"preferences\":{\"buys most often\":[{\"id\":\"567ab0a2-4642-4b56-9720-ec8c17ffbb94\",\"name\":\"Mercedes\",\"price\":300.25,\"reviews\":[\"Excellent\",\"Good\"],\"categories\":[\"Cars\",\"Mercedes\"],\"specifications\":{\"Color\":[\"Red\",\"Blue\",\"Green\"],\"Weight\":[\"1kg\",\"1.5kg\",\"2kg\"]},\"userReviews\":{\"25a4b739-d0cf-4211-94d7-5a86b0264870\":[\"bad\",\"very bad\"],\"567ab0a2-4642-4b56-9720-ec8c17ffbb94\":[\"good\",\"very good\"]}}]}}";
 
+        // When
         Customer actual = serializer.deserialize(json, Customer.class);
         Customer expected = jacksonMapper.readValue(json, Customer.class);
 
+        // Then
         assertThat(actual)
                 .hasFieldOrPropertyWithValue(Customer.Fields.firstName, expected.getFirstName())
                 .hasFieldOrPropertyWithValue(Customer.Fields.lastName, expected.getLastName())

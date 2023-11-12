@@ -1,4 +1,4 @@
-package clevertec;
+package clevertec.entity;
 
 public enum TokenType {
     BEGIN_OBJECT,
