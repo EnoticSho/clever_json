@@ -25,7 +25,7 @@ public class JsonTokenizerTest {
     @Test
     void testValidJson() throws JsonParseException {
         //Given
-        String json = "{\"name\": \"John\", \"age\": 30}";
+        String json = "{\"name\": \"Sergey\", \"age\": 30}";
 
         //When
         List<Token> tokens = tokenizer.tokenize(json);
@@ -47,7 +47,7 @@ public class JsonTokenizerTest {
     void testUnclosedString() {
         //Given
         JsonTokenizer tokenizer = new JsonTokenizer();
-        String json = "{\"name\": \"John";
+        String json = "{\"name\": \"Sergey";
         String expectedMessage = "Unclosed string in JSON";
 
         //When
